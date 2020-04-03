@@ -5,8 +5,11 @@
       "mocha": true
     },
     "parserOptions": {
-      "sourceType": "module",
-      "ecmaVersion": "2018"
+      "sourceType": "script",
+      "ecmaVersion": "2018",
+      "ecmaFeatures": {
+        "jsx": true
+      }
     },
     "extends": [
       "eslint:recommended", 
