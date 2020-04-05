@@ -26,3 +26,4 @@ https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
 - код в js и css разделен
 - index.js для сокращения пути импорта
 - название паки и класса в одном стиле: или ItemStatesFilter или item-status-filter
+- по-умолчанию используем компонент как функцию, если необходимо состояние - то переделываем в класс
