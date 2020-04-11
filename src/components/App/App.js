@@ -4,6 +4,7 @@ import AppHeader from '../AppHeader';
 import SearchPanel from '../SearchPanel';
 import TodoList from '../TodoList';
 import ItemStatusFilter from '../ItemStatusFilter';
+import AddItem from '../AddItem';
 
 export default class App extends Component {
   state = {
@@ -26,6 +27,17 @@ export default class App extends Component {
     );
   }
 
+  addItem = text => {
+    this.setState( ({ todoData }) => {
+      const xid = Math.max.apply(Math, todoData.map(function(o) { return o.id; })) + 1;
+      const newArray = [ ...todoData, { label: text, important: false, id: xid }];
+
+      return {
+        todoData: newArray
+      }
+    });
+  }
+
   render () {
     const { todoData } = this.state;
 
@@ -40,6 +52,9 @@ export default class App extends Component {
       <TodoList 
         todos={ todoData } 
         onDeleted = { this.deleteItem }/>
+      
+      <AddItem 
+        onAdd = { this.addItem } />
     </div>      
     );
   };  
