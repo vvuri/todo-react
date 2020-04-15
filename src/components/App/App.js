@@ -14,7 +14,8 @@ export default class App extends Component {
       this.createTodoItem('React practice'),
       this.createTodoItem('TV watch'), 
       this.createTodoItem('Drink Tea'),
-    ]
+    ],
+    filter: ''
   }
 
   createTodoItem (label) {
@@ -22,7 +23,6 @@ export default class App extends Component {
       label: label, 
       important: false, 
       done: false,
-      visible: true,
       id: this._maxId++
     }
   }
@@ -66,25 +66,18 @@ export default class App extends Component {
     });
   }
 
-  setFilter = text => {
-    this.setState( ({ todoData }) => {
-      const newArray = [];
-      for (const idx of todoData) {
-        const idxnew = idx;
-        if (idx.label.toLowerCase().indexOf(text.toLowerCase())>=0 || text === '') {
-            idxnew.visible = true;
-        } 
-        else {
-            idxnew.visible = false;
-        }
-        newArray.push(idxnew);
-      }
+  search(items, filter) {
+    return items.filter( item => {
+      return (item.label.toLowerCase().indexOf(filter.toLowerCase())>-1 || filter === '');
+    });
+  }
 
+  setFilter = text => {
+    this.setState( ({ filter }) => {
       return {
-        todoData: newArray
+        filter: text
       }
-    })
-    console.log('Filter: '+text);
+    });
   }
 
   onToggleImportant = id => {
@@ -96,9 +89,10 @@ export default class App extends Component {
   }
 
   render () {
-    const { todoData } = this.state;
+    const { todoData, filter } = this.state;
     const doneCount = todoData.filter( el => el.done).length;
     const todoCount = todoData.length - doneCount;    
+    const visibleItems = this.search(todoData, filter);
 
     return (
       <div className="todo-app">
@@ -110,7 +104,7 @@ export default class App extends Component {
       </div>
 
       <TodoList 
-        todos={ todoData } 
+        todos={ visibleItems } 
         onDeleted = { this.deleteItem }
         onToggleImportant = { this.onToggleImportant }
         onToggleDone = { this.onToggleDone }
