@@ -22,6 +22,7 @@ export default class App extends Component {
       label: label, 
       important: false, 
       done: false,
+      visible: true,
       id: this._maxId++
     }
   }
@@ -65,6 +66,27 @@ export default class App extends Component {
     });
   }
 
+  setFilter = text => {
+    this.setState( ({ todoData }) => {
+      const newArray = [];
+      for (const idx of todoData) {
+        const idxnew = idx;
+        if (idx.label.toLowerCase().indexOf(text.toLowerCase())>=0 || text === '') {
+            idxnew.visible = true;
+        } 
+        else {
+            idxnew.visible = false;
+        }
+        newArray.push(idxnew);
+      }
+
+      return {
+        todoData: newArray
+      }
+    })
+    console.log('Filter: '+text);
+  }
+
   onToggleImportant = id => {
     this.updateTodoDataToggle( id, 'important');
   }  
@@ -82,7 +104,8 @@ export default class App extends Component {
       <div className="todo-app">
       <AppHeader toDo={todoCount} done={doneCount} />
       <div className="top-panel d-flex">
-        <SearchPanel />
+        <SearchPanel 
+          onFilter = { this.setFilter }/>
         <ItemStatusFilter />
       </div>
 
